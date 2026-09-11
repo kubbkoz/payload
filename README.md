@@ -91,9 +91,9 @@ Po pridaní alebo zmene vlastného komponentu administrácie spusti
 | `CRON_SECRET` | nie | Chráni frontu naplánovaného zverejnenia |
 | `HUB_ADMIN_EMAIL`, `HUB_ADMIN_PASSWORD` | nie | Prvý master pri prázdnej databáze |
 
-Cron v `vercel.json` spúšťa `/api/payload-jobs/run` — fronta naplánovaného
-zverejnenia. Na programe Hobby vie Vercel cron spúšťať raz denne; na Pro daj
-pokojne každých pár minút.
+Cron v `vercel.json` spúšťa `/api/payload-jobs/run` každých desať minút —
+je to fronta naplánovaného zverejnenia. Program Hobby vie cron spúšťať len raz
+denne; tam zmeň rozvrh na `0 * * * *` alebo si frontu spúšťaj externe.
 
 ---
 
