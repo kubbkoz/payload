@@ -1,0 +1,215 @@
+/* Štýly hubu. Držia sa premenných Payloadu, aby svetlá aj tmavá téma sedeli. */
+
+.hub-prepinac {
+  padding: 0.75rem 0 1rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--theme-elevation-100);
+}
+
+.hub-prepinac__popis {
+  display: block;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--theme-elevation-500);
+  margin-bottom: 0.35rem;
+}
+
+.hub-prepinac__riadok {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hub-prepinac__bodka {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+.hub-prepinac__vyber {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0.4rem 0.5rem;
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--theme-elevation-800);
+  background: var(--theme-input-bg, var(--theme-elevation-50));
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: 4px;
+}
+
+.hub-prepinac__napoveda {
+  margin: 0.4rem 0 0;
+  font-size: 0.7rem;
+  line-height: 1.4;
+  color: var(--theme-elevation-450);
+}
+
+/* ── Nástenka ─────────────────────────────────────────────────────────── */
+
+.hub-nastenka {
+  margin-bottom: 2.5rem;
+}
+
+.hub-nastenka__hlavicka h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.25rem;
+}
+
+.hub-nastenka__hlavicka p {
+  margin: 0 0 1.25rem;
+  color: var(--theme-elevation-500);
+  font-size: 0.85rem;
+}
+
+.hub-nastenka--prazdna {
+  padding: 1.5rem;
+  border: 1px dashed var(--theme-elevation-200);
+  border-radius: 8px;
+}
+
+.hub-nastenka--prazdna h2 {
+  margin-top: 0;
+}
+
+.hub-karty {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.hub-karta {
+  border: 1px solid var(--theme-elevation-100);
+  border-top: 3px solid #2f6f4e;
+  border-radius: 8px;
+  padding: 1rem;
+  background: var(--theme-elevation-0);
+}
+
+.hub-karta__nazov {
+  margin: 0 0 0.2rem;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.hub-znacka {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  background: var(--theme-elevation-100);
+  color: var(--theme-elevation-600);
+}
+
+.hub-karta__domena {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--theme-elevation-500);
+  margin-bottom: 0.8rem;
+  word-break: break-all;
+}
+
+.hub-karta__domena--prazdna {
+  font-style: italic;
+}
+
+.hub-karta__cisla {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+  gap: 0.6rem;
+  margin: 0;
+}
+
+.hub-karta__cisla div {
+  min-width: 0;
+}
+
+.hub-karta__cisla dt {
+  font-size: 0.68rem;
+  color: var(--theme-elevation-450);
+  line-height: 1.2;
+}
+
+.hub-karta__cisla dd {
+  margin: 0.1rem 0 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.hub-karta__upozornenie {
+  margin: 0.9rem 0 0;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  background: color-mix(in srgb, #d98324 18%, transparent);
+  color: var(--theme-elevation-800);
+}
+
+/* ── Posledná činnosť ─────────────────────────────────────────────────── */
+
+.hub-cinnost {
+  margin-top: 2rem;
+}
+
+.hub-cinnost h3 {
+  font-size: 0.95rem;
+  margin: 0 0 0.6rem;
+}
+
+.hub-cinnost ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--theme-elevation-100);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.hub-cinnost li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  padding: 0.55rem 0.8rem;
+  font-size: 0.82rem;
+  border-bottom: 1px solid var(--theme-elevation-50);
+}
+
+.hub-cinnost li:last-child {
+  border-bottom: 0;
+}
+
+.hub-cinnost__meta {
+  color: var(--theme-elevation-450);
+  font-size: 0.72rem;
+}
+
+.hub-akcia {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+  background: var(--theme-elevation-100);
+  color: var(--theme-elevation-600);
+  flex: 0 0 auto;
+}
+
+.hub-akcia--vytvorenie {
+  background: color-mix(in srgb, #2f6f4e 20%, transparent);
+}
+
+.hub-akcia--zverejnenie {
+  background: color-mix(in srgb, #2f6fa8 20%, transparent);
+}
+
+.hub-akcia--zmazanie {
+  background: color-mix(in srgb, #b03030 20%, transparent);
+}

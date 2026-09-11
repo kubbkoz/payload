@@ -1,151 +1,217 @@
-<a href="https://payloadcms.com"><img width="100%" src="https://l4wlsi8vxy8hre4v.public.blob.vercel-storage.com/github-banner-new-logo.jpg" alt="Payload headless CMS Admin panel built with React" /></a>
-<br />
-<br />
+# HUB CMS
 
-<p align="left">
-  <a href="https://github.com/payloadcms/payload/actions"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/payloadcms/payload/main.yml?style=flat-square"></a>
-  &nbsp;
-  <a href="https://discord.gg/payload"><img alt="Discord" src="https://img.shields.io/discord/967097582721572934?label=Discord&color=7289da&style=flat-square" /></a>
-  &nbsp;
-  <a href="https://www.npmjs.com/package/payload"><img alt="npm" src="https://img.shields.io/npm/dw/payload?style=flat-square" /></a>
-  &nbsp;
-  <a href="https://github.com/payloadcms/payload/graphs/contributors"><img alt="npm" src="https://img.shields.io/github/contributors-anon/payloadcms/payload?color=yellow&style=flat-square" /></a>
-  &nbsp;
-  <a href="https://www.npmjs.com/package/payload"><img alt="npm" src="https://img.shields.io/npm/v/payload?style=flat-square" /></a>
-  &nbsp;
-  <a href="https://twitter.com/payloadcms"><img src="https://img.shields.io/badge/follow-payloadcms-1DA1F2?logo=twitter&style=flat-square" alt="Payload Twitter" /></a>
-</p>
-<hr/>
-<h4>
-<a target="_blank" href="https://payloadcms.com/docs/getting-started/what-is-payload" rel="dofollow"><strong>Explore the Docs</strong></a>&nbsp;·&nbsp;<a target="_blank" href="https://payloadcms.com/community-help" rel="dofollow"><strong>Community Help</strong></a>&nbsp;·&nbsp;<a target="_blank" href="https://github.com/payloadcms/payload/discussions/1539" rel="dofollow"><strong>Roadmap</strong></a>&nbsp;·&nbsp;<a target="_blank" href="https://www.g2.com/products/payload-cms/reviews#reviews" rel="dofollow"><strong>View G2 Reviews</strong></a>
-</h4>
-<hr/>
+Jedna administrácia pre ľubovoľný počet webov. Postavené na Payload 3, Next 16
+a Postgrese.
 
-> [!IMPORTANT]
-> Star this repo or keep an eye on it to follow along.
+Namiesto samostatného backendu pre každý web beží jeden systém, v ktorom je
+každý web **projektom**. Obsah, ľudia aj práva sú na jednom mieste; napojený web
+si svoje dáta ťahá cez HTTP a sám žiadnu databázu ani prihlasovanie nepotrebuje.
 
-Payload is the first-ever Next.js native CMS that can install directly in your existing `/app` folder. It's the start of a new era for headless CMS.
+- **Architektúra a rozhodnutia:** [ARCHITEKTURA.md](./ARCHITEKTURA.md)
+- **Administrácia:** `/admin`
+- **Rozhranie pre weby:** `/api/web/<kód projektu>/…`
 
-<h3>Benefits over a regular CMS</h3>
-<ul>
-   <li>It's both an app framework & headless CMS</li>
-  <li>Deploy anywhere, including serverless on Vercel for free</li>
-  <li>Combine your front+backend in the same <code>/app</code> folder if you want</li>
-  <li>Don't sign up for yet another SaaS - Payload is open source</li>
-  <li>Query your database in React Server Components</li>
-  <li>Both admin and backend are 100% extensible</li>
-  <li>No vendor lock-in</li>
-  <li>Never touch ancient WP code again</li>
-  <li>Build faster, never hit a roadblock</li>
-</ul>
+---
 
-## Quickstart
+## Čo systém vie
 
-Before beginning to work with Payload, make sure you have all of the [required software](https://payloadcms.com/docs/getting-started/installation).
+| Oblasť | Obsah |
+| --- | --- |
+| **Obsah** | Stránky skladané z 12 blokov, príspevky, katalóg (ponuka/cenník/produkty), udalosti, kategórie, fotografie, súbory |
+| **Štruktúra webu** | Menu pre hlavičku/pätičku, nastavenia webu (identita, kontakt, hodiny, siete, meranie, právne texty), presmerovania |
+| **Interakcia** | Skladateľné formuláre, prijaté odpovede vrátane stavu vybavenia a e-mailových upozornení |
+| **Prevádzka** | Záznam činnosti — kto, čo, kedy a v ktorom projekte |
+| **Systém** | Projekty, používatelia s právami po projektoch, API kľúče |
+| **Obsahová práca** | Koncepty, automatické ukladanie, história verzií, naplánované zverejnenie |
 
-```text
-pnpx create-payload-app@latest
+## Role
+
+Rola nie je vlastnosť človeka, ale dvojice **človek + projekt**. Ten istý
+používateľ môže byť správcom jedného webu a pozorovateľom druhého.
+
+| Rola | Čo smie |
+| --- | --- |
+| **master** | Všetko vo všetkých projektoch vrátane zakladania projektov a API kľúčov |
+| **správca** | Celý obsah projektu + nastavenia webu, menu, presmerovania, pozývanie ľudí k svojim projektom |
+| **editor** | Vytvára, upravuje, zverejňuje a maže obsah. Nastavenia webu nevidí |
+| **autor** | Píše a upravuje výhradne vlastné záznamy a nesmie ich zverejniť |
+| **pozorovateľ** | Obsah len číta |
+
+Oddelenie projektov nie je kontrola v rozhraní — je to podmienka pripojená ku
+každému dotazu vrátane REST a GraphQL, plus zložené unikátne indexy v databáze.
+Dva weby teda pokojne majú vlastné `/kontakt` a jeden o druhom nevie.
+
+---
+
+## Spustenie lokálne
+
+```bash
+cp .env.example .env          # vyplň DATABASE_URI a PAYLOAD_SECRET
+createdb hub                  # prázdna Postgres databáza
+npm install
+npm run payload:migrate       # vytvorí schému
+npm run dev                   # http://localhost:3000/admin
 ```
 
-**If you're new to Payload, you should start with the website template** (`pnpx create-payload-app@latest -t website`). It shows how to do _everything_ - including custom Rich Text blocks, on-demand revalidation, live preview, and more. It comes with a frontend built with Tailwind all in one `/app` folder.
+Prvý účet vytvoríš na úvodnej obrazovke administrácie — systém z neho
+automaticky spraví mastera. Alternatívne vyplň `HUB_ADMIN_EMAIL`
+a `HUB_ADMIN_PASSWORD` a založí sa pri štarte sám.
 
-## One-click deployment options
+### Zmena schémy
 
-You can deploy Payload serverlessly in one-click via Vercel and Cloudflare—giving everything you need without the hassle of the plumbing.
-
-### Deploy on Cloudflare
-
-Fully self-contained — one click to deploy Payload with **Workers**, **R2** for uploads, and **D1** for a globally replicated database.
-
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://dub.sh/payload-cloudflare)
-
-### Deploy on Vercel
-
-All-in-one on Vercel — one click to deploy Payload with a **Next.js** front end, **Neon** database, and **Vercel Blob** for media storage.
-
-[![Deploy with Vercel](https://vercel.com/button)](https://dub.sh/payload-vercel)
-
-## One-click templates
-
-Jumpstart your next project with a ready-to-go template. These are **production-ready, end-to-end solutions** designed to get you to market fast. Build any kind of **website**, **ecommerce store**, **blog**, or **portfolio** — complete with a modern front end built using **React Server Components** and **Tailwind**.
-
-#### 🌐 [Website](https://github.com/payloadcms/payload/tree/main/templates/website)
-
-#### 🛍️ [Ecommerce](https://github.com/payloadcms/payload/tree/main/templates/ecommerce) 🎉 _**NEW**_ 🎉
-
-We're constantly adding more templates to our [**Templates Directory**](https://github.com/payloadcms/payload/tree/main/templates).  
-If you maintain your own, add the `payload-template` topic to your GitHub repo so others can discover it.
-
-**🔗 Explore more:**
-
-- [Official Templates](https://github.com/payloadcms/payload/tree/main/templates)
-- [Community Templates](https://github.com/topics/payload-template)
-
-## ✨ Payload Features
-
-- Completely free and open-source
-- Next.js native, built to run inside _your_ `/app` folder
-- Use server components to extend Payload UI
-- Query your database directly in server components, no need for REST / GraphQL
-- Fully TypeScript with automatic types for your data
-- [Auth out of the box](https://payloadcms.com/docs/authentication/overview)
-- [Versions and drafts](https://payloadcms.com/docs/versions/overview)
-- [Localization](https://payloadcms.com/docs/configuration/localization)
-- [Block-based layout builder](https://payloadcms.com/docs/fields/blocks)
-- [Customizable React admin](https://payloadcms.com/docs/admin/overview)
-- [Lexical rich text editor](https://payloadcms.com/docs/fields/rich-text)
-- [Conditional field logic](https://payloadcms.com/docs/fields/overview#conditional-logic)
-- Extremely granular [Access Control](https://payloadcms.com/docs/access-control/overview)
-- [Document and field-level hooks](https://payloadcms.com/docs/hooks/overview) for every action Payload provides
-- Intensely fast API
-- Highly secure thanks to HTTP-only cookies, CSRF protection, and more
-
-<a target="_blank" href="https://github.com/payloadcms/payload/discussions"><strong>Request Feature</strong></a>
-
-## 🗒️ Documentation
-
-Check out the [Payload website](https://payloadcms.com/docs/getting-started/what-is-payload) to find in-depth documentation for everything that Payload offers.
-
-Migrating from v2 to v3? Check out the [3.0 Migration Guide](https://github.com/payloadcms/payload/blob/main/docs/migration-guide/overview.mdx) on how to do it.
-
-## 🙋 Contributing
-
-If you want to add contributions to this repository, please follow the instructions in [contributing.md](./CONTRIBUTING.md).
-
-## 📚 Examples
-
-The [Examples Directory](./examples) is a great resource for learning how to setup Payload in a variety of different ways, but you can also find great examples in our blog and throughout our social media.
-
-If you'd like to run the examples, you can use `create-payload-app` to create a project from one:
-
-```sh
-npx create-payload-app --example example_name
+```bash
+npm run payload:migrate:create nazov_zmeny   # vygeneruje a opraví migráciu
+npm run payload:migrate                      # aplikuje ju lokálne
+npm run payload:types                        # prepíše payload-types.ts
 ```
 
-You can see more examples at:
+Dev push je vypnutý zámerne — pozri komentár v `src/payload.config.ts`.
+Produkčná databáza sa migruje sama pri prvom štarte po nasadení.
 
-- [Examples Directory](./examples)
-- [Payload Blog](https://payloadcms.com/blog)
-- [Payload YouTube](https://www.youtube.com/@payloadcms)
+Po pridaní alebo zmene vlastného komponentu administrácie spusti
+`npm run payload:importmap`.
 
-## 🔌 Plugins
+---
 
-Payload is highly extensible and allows you to install or distribute plugins that add or remove functionality. There are both officially-supported and community-supported plugins available. If you maintain your own plugin, consider adding the `payload-plugin` topic to your GitHub repository for others to find.
+## Nasadenie na Vercel
 
-- [Official Plugins](https://github.com/orgs/payloadcms/repositories?q=topic%3Apayload-plugin)
-- [Community Plugins](https://github.com/topics/payload-plugin)
+1. Naimportuj repozitár ako Next.js projekt.
+2. Pripoj **Postgres** (Neon alebo Vercel Postgres) — vloží `DATABASE_URL`.
+3. Pripoj **Blob** úložisko — vloží `BLOB_READ_WRITE_TOKEN`. Bez neho sa
+   nahraté súbory po každom studenom štarte stratia.
+4. Nastav premenné:
 
-## 🚨 Need help?
+| Premenná | Povinná | Na čo |
+| --- | --- | --- |
+| `PAYLOAD_SECRET` | áno | Podpisovanie prihlasovacích tokenov (`openssl rand -hex 32`) |
+| `NEXT_PUBLIC_SERVER_URL` | áno | Verejná adresa hubu |
+| `DATABASE_URL` | áno | Postgres (vloží integrácia) |
+| `BLOB_READ_WRITE_TOKEN` | prakticky áno | Úložisko súborov |
+| `RESEND_API_KEY`, `EMAIL_FROM` | nie | Obnova hesla a upozornenia z formulárov |
+| `CRON_SECRET` | nie | Chráni frontu naplánovaného zverejnenia |
+| `HUB_ADMIN_EMAIL`, `HUB_ADMIN_PASSWORD` | nie | Prvý master pri prázdnej databáze |
 
-There are lots of good conversations and resources in our Github Discussions board and our Discord Server. If you're struggling with something, chances are, someone's already solved what you're up against. :point_down:
+Cron v `vercel.json` spúšťa `/api/payload-jobs/run` — fronta naplánovaného
+zverejnenia. Na programe Hobby vie Vercel cron spúšťať raz denne; na Pro daj
+pokojne každých pár minút.
 
-- [GitHub Discussions](https://github.com/payloadcms/payload/discussions)
-- [GitHub Issues](https://github.com/payloadcms/payload/issues)
-- [Discord](https://t.co/30APlsQUPB)
-- [Community Help](https://payloadcms.com/community-help)
+---
 
-## ⭐ Like what we're doing? Give us a star
+## Ako sa napojí web
 
-## 👏 Thanks to all our contributors
+### 1. Založ projekt
 
-<img align="left" src="https://contributors-img.web.app/image?repo=payloadcms/payload"/>
+Systém → Projekty. Vyplň názov, kód (napr. `vinaren`) a domény, na ktorých web
+beží. Z domén vzniká zoznam povolených pôvodov — čo tam nie je, to si obsah
+z prehliadača nestiahne.
+
+### 2. Stiahni si obsah
+
+```js
+const hub = "https://tvoj-hub.vercel.app";
+
+// Všetko na štart jedným dotazom: nastavenia, menu, presmerovania
+const web = await fetch(`${hub}/api/web/vinaren`).then((r) => r.json());
+
+// Jedna stránka aj s blokmi
+const stranka = await fetch(
+  `${hub}/api/web/vinaren/stranka?cesta=/o-nas`,
+).then((r) => r.json());
+
+// Výpisy
+const clanky = await fetch(
+  `${hub}/api/web/vinaren/prispevky?limit=6&kategoria=novinky`,
+).then((r) => r.json());
+```
+
+| Adresa | Vráti |
+| --- | --- |
+| `GET /api/web/:kod` | Nastavenia webu, menu, presmerovania |
+| `GET /api/web/:kod/stranky` | Zoznam zverejnených stránok |
+| `GET /api/web/:kod/stranka?cesta=/o-nas` | Stránku s blokmi a SEO |
+| `GET /api/web/:kod/prispevky` | Články — `slug`, `kategoria`, `limit`, `strana`, `odporucane=1`, `radit` |
+| `GET /api/web/:kod/katalog` | Položky s cenou, parametrami a galériou |
+| `GET /api/web/:kod/udalosti` | Akcie; minulé sa nevydávajú, `vsetky=1` ich zahrnie |
+| `GET /api/web/:kod/kategorie` | Číselník — `pre=prispevky\|katalog\|udalosti` |
+| `GET /api/web/:kod/formular/:slug` | Popis polí formulára |
+| `POST /api/web/:kod/formular/:slug` | Odoslanie formulára |
+
+Vydáva sa výhradne **zverejnený** obsah zvoleného projektu. Koncepty
+a rozrobené verzie von neidú.
+
+### 3. Prihlás sa, ak má byť obsah neverejný
+
+Projekt s vypnutým „obsah dostupný bez kľúča“ vyžaduje hlavičku:
+
+```js
+fetch(`${hub}/api/web/vinaren/katalog`, {
+  headers: { "x-api-key": process.env.HUB_API_KEY },
+});
+```
+
+Kľúč vystavíš v Systém → API kľúče. Je viazaný na jeden projekt, je len na
+čítanie a na cudzí projekt neprejde.
+
+### 4. Nechaj si preplachovať web
+
+Do projektu vyplň **adresu na prepláchnutie** a **tajomstvo**. Po každej zmene
+obsahu príde na tú adresu POST:
+
+```json
+{
+  "udalost": "zmenene",
+  "projekt": 1,
+  "kolekcia": "stranky",
+  "zaznam": 12,
+  "cas": "2026-09-11T21:30:00.000Z"
+}
+```
+
+V hlavičke `x-hub-secret` je tajomstvo. Na strane webu (Next.js):
+
+```ts
+export async function POST(req: Request) {
+  if (req.headers.get("x-hub-secret") !== process.env.HUB_SECRET) {
+    return new Response("Nie", { status: 401 });
+  }
+  revalidatePath("/", "layout");
+  return Response.json({ ok: true });
+}
+```
+
+### 5. Formuláre
+
+```js
+await fetch(`${hub}/api/web/vinaren/formular/kontakt`, {
+  method: "POST",
+  headers: { "content-type": "application/json" },
+  body: JSON.stringify({ meno, email, sprava, _pasca: "" }),
+});
+```
+
+`_pasca` je skryté pole — nechaj ho vo formulári prázdne a neviditeľné pre
+človeka. Keď ho niečo vyplní, hub odpoveď ticho zahodí. Odpoveď na neplatné
+údaje má stav 422 a pole `chyby` s vetami v slovenčine.
+
+---
+
+## Štruktúra repozitára
+
+```
+src/
+  payload.config.ts        konfigurácia — kolekcie, adaptéry, endpointy
+  payload/
+    access.ts              oddelenie projektov, role, filtre dotazov
+    roly.ts                role a ich váhy
+    kolekcie.ts            zoznam kolekcií patriacich projektu
+    hooky.ts               preplach napojeného webu a záznam činnosti
+    endpointy.ts           delivery API pre napojené weby
+    collections/           16 kolekcií
+    bloky/                 bloky page buildera
+    polia/                 pole projektu, slug, SEO, relácie v projekte
+    admin/                 prepínač projektu, nástenka, štýly
+  app/(payload)/           administrácia a REST/GraphQL Payloadu
+  app/(hub)/               verejná úvodná obrazovka hubu
+  lib/                     pomocné funkcie API a textu
+  migrations/              migrácie databázy
+```
