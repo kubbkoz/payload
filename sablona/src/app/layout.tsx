@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 
 import { adresaWebu } from "@/hub/adresa";
-import { zaklad } from "@/hub/klient";
+import { chybaHubu, zaklad } from "@/hub/klient";
 import type { Zaklad } from "@/hub/typy";
 import { Hlavicka } from "@/komponenty/Hlavicka";
 import { Nenapojene } from "@/komponenty/Nenapojene";
@@ -12,11 +12,8 @@ import { Suhlas } from "@/komponenty/Suhlas";
 import "@/styly/web.css";
 
 const nacitaj = async (): Promise<{ data: Zaklad | null; chyba: string | null }> => {
-  try {
-    return { data: await zaklad(), chyba: null };
-  } catch (chyba) {
-    return { data: null, chyba: (chyba as Error).message };
-  }
+  const data = await zaklad();
+  return { data, chyba: data ? null : chybaHubu() };
 };
 
 export async function generateMetadata(): Promise<Metadata> {
