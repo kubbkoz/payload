@@ -623,3 +623,67 @@ a:focus-visible,
   font-size: 0.78rem;
   color: var(--theme-elevation-500);
 }
+
+.napojenie__vyber {
+  display: flex;
+  gap: 0.6rem;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+
+.napojenie__select {
+  flex: 1 1 18rem;
+  min-width: 0;
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 0.5rem 0.6rem;
+  color: var(--theme-elevation-800);
+  background: var(--theme-input-bg);
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: var(--style-radius-m);
+}
+
+.napojenie__select:hover:not(:disabled) {
+  border-color: var(--zjav);
+}
+
+.napojenie__akcia {
+  flex: 0 0 auto;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.5rem 1.2rem;
+  border: 0;
+  border-radius: var(--style-radius-m);
+  background: var(--zjav);
+  color: var(--zjav-kontrast);
+  cursor: pointer;
+  box-shadow: 0 0 14px var(--zjav-ziara);
+}
+
+.napojenie__akcia:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.napojenie__varovanie,
+.napojenie__hotovo {
+  margin: 0.8rem 0 0;
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--style-radius-m);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.napojenie__varovanie {
+  border: 1px solid color-mix(in srgb, #ff9d3d 45%, transparent);
+  background: color-mix(in srgb, #ff9d3d 12%, transparent);
+  color: var(--theme-elevation-800);
+}
+
+.napojenie__hotovo {
+  border: 1px solid color-mix(in srgb, var(--signal) 45%, transparent);
+  background: color-mix(in srgb, var(--signal) 12%, transparent);
+  color: var(--theme-elevation-800);
+}

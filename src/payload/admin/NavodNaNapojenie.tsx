@@ -1,7 +1,7 @@
 "use client";
 
-import { useFormFields } from "@payloadcms/ui";
-import { useState } from "react";
+import { useDocumentInfo, useFormFields } from "@payloadcms/ui";
+import { useCallback, useEffect, useState } from "react";
 
 /**
  * Návod na napojenie, vygenerovaný pre konkrétny projekt.
@@ -40,6 +40,154 @@ const Blok = ({ nadpis, kod, popis }: { nadpis: string; kod: string; popis?: str
       </div>
       {popis ? <p className="napojenie__popis">{popis}</p> : null}
       <pre className="napojenie__kod">{kod}</pre>
+    </div>
+  );
+};
+
+type VercelProjekt = {
+  id: string;
+  nazov: string;
+  framework: string | null;
+  domena: string | null;
+  repozitar: string | null;
+  napojenyNa: string | null;
+};
+
+/**
+ * Výber existujúceho webu na Verceli a jeho napojenie jedným tlačidlom.
+ *
+ * Toto je cesta pre weby, ktoré už žijú. Nezakladá nič — len tomu projektu
+ * nastaví premenné, prečíta doménu, zapíše ju späť sem a spustí nasadenie,
+ * aby sa premenné prejavili. Preto stačí jediný token a netreba prístup do
+ * GitHubu, ktorý zakladanie nových webov vyžaduje.
+ */
+const VyberProjektu = ({ kod }: { kod: string }) => {
+  const { id } = useDocumentInfo();
+  const [stav, nastavStav] = useState<"nacitavam" | "pripravene" | "nedostupne">("nacitavam");
+  const [dovod, nastavDovod] = useState<string | null>(null);
+  const [projekty, nastavProjekty] = useState<VercelProjekt[]>([]);
+  const [zvoleny, nastavZvoleny] = useState("");
+  const [pracuje, nastavPracuje] = useState(false);
+  const [vysledok, nastavVysledok] = useState<{ ok: boolean; text: string } | null>(null);
+
+  useEffect(() => {
+    let zivy = true;
+    fetch("/api/napojenie/vercel-projekty", { credentials: "include" })
+      .then((r) => r.json())
+      .then((d) => {
+        if (!zivy) return;
+        if (d?.dostupne) {
+          nastavProjekty(d.projekty ?? []);
+          nastavStav("pripravene");
+        } else {
+          nastavDovod(d?.dovod ?? "Zoznam projektov sa nepodarilo načítať.");
+          nastavStav("nedostupne");
+        }
+      })
+      .catch((chyba) => {
+        if (!zivy) return;
+        nastavDovod(String(chyba));
+        nastavStav("nedostupne");
+      });
+    return () => {
+      zivy = false;
+    };
+  }, []);
+
+  const napoj = useCallback(async () => {
+    if (!zvoleny || !id || pracuje) return;
+    nastavPracuje(true);
+    nastavVysledok(null);
+    try {
+      const odpoved = await fetch("/api/napojenie/napojit", {
+        method: "POST",
+        credentials: "include",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ projekt: id, vercelId: zvoleny }),
+      });
+      const telo = await odpoved.json().catch(() => ({}));
+      nastavVysledok(
+        odpoved.ok && telo?.ok
+          ? { ok: true, text: telo.sprava ?? "Hotovo." }
+          : { ok: false, text: telo?.chyba ?? "Napojenie zlyhalo." },
+      );
+    } catch (chyba) {
+      nastavVysledok({ ok: false, text: String(chyba) });
+    } finally {
+      nastavPracuje(false);
+    }
+  }, [zvoleny, id, pracuje]);
+
+  if (stav === "nacitavam") {
+    return <p className="napojenie__popis">Načítavam projekty z Vercelu…</p>;
+  }
+
+  if (stav === "nedostupne") {
+    return (
+      <div className="napojenie__blok">
+        <span className="napojenie__nadpis">Existujúci web na Verceli</span>
+        <p className="napojenie__popis">{dovod}</p>
+        <p className="napojenie__popis">
+          Bez tokenu sa dá napojiť aj ručne — premenné nižšie vlož do projektu sám.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="napojenie__blok">
+      <span className="napojenie__nadpis">Napojiť existujúci web</span>
+      <p className="napojenie__popis">
+        Vyber projekt na Verceli. Hub mu nastaví premenné, prečíta doménu, zapíše ju sem
+        a spustí nasadenie — ručne nemusíš nič.
+      </p>
+
+      <div className="napojenie__vyber">
+        <select
+          className="napojenie__select"
+          value={zvoleny}
+          onChange={(e) => nastavZvoleny(e.target.value)}
+          disabled={pracuje}
+        >
+          <option value="">— vyber projekt —</option>
+          {projekty.map((p) => (
+            <option key={p.id} value={p.id}>
+              {p.nazov}
+              {p.domena ? ` · ${p.domena}` : ""}
+              {p.napojenyNa ? ` · už napojený na ${p.napojenyNa}` : ""}
+            </option>
+          ))}
+        </select>
+
+        <button
+          type="button"
+          className="napojenie__akcia"
+          onClick={napoj}
+          disabled={!zvoleny || !id || pracuje}
+        >
+          {pracuje ? "Napájam…" : "Napojiť"}
+        </button>
+      </div>
+
+      {!id ? (
+        <p className="napojenie__popis">Projekt najprv ulož — bez neho nie je čo napájať.</p>
+      ) : null}
+
+      {zvoleny && projekty.find((p) => p.id === zvoleny)?.napojenyNa &&
+      projekty.find((p) => p.id === zvoleny)?.napojenyNa !== kod ? (
+        <p className="napojenie__varovanie">
+          Pozor: tento web je napojený na projekt{" "}
+          <strong>{projekty.find((p) => p.id === zvoleny)?.napojenyNa}</strong>. Napojením ho
+          prepneš sem.
+        </p>
+      ) : null}
+
+      {vysledok ? (
+        <p className={vysledok.ok ? "napojenie__hotovo" : "napojenie__varovanie"}>
+          {vysledok.text}
+          {vysledok.ok ? " Obnov stránku, nech uvidíš zapísané hodnoty." : ""}
+        </p>
+      ) : null}
     </div>
   );
 };
@@ -92,6 +240,8 @@ export const NavodNaNapojenie = () => {
         Toto stačí hocijakému webu — šablóne, existujúcemu Next.js projektu aj cudziemu
         frameworku. Backend nepotrebuje vedieť, čo je na druhom konci.
       </p>
+
+      <VyberProjektu kod={kod} />
 
       <Blok
         nadpis="Premenné prostredia"
