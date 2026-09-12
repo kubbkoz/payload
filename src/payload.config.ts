@@ -26,6 +26,7 @@ import { Udalosti } from "./payload/collections/Udalosti";
 import { Users } from "./payload/collections/Users";
 import { Zaznamy } from "./payload/collections/Zaznamy";
 import { ENDPOINTY } from "./payload/endpointy";
+import { ENDPOINTY_NAPOJENIA } from "./payload/endpointy-napojenie";
 import { migrations } from "./migrations/index";
 
 const filename = fileURLToPath(import.meta.url);
@@ -101,7 +102,7 @@ export default buildConfig({
     Users,
     ApiKlienti,
   ],
-  endpoints: ENDPOINTY,
+  endpoints: [...ENDPOINTY, ...ENDPOINTY_NAPOJENIA],
   editor: lexicalEditor(),
   i18n: {
     supportedLanguages: { sk },
