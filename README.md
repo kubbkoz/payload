@@ -113,6 +113,37 @@ v dvoch repozitároch, kde si druhý všimne až produkcia.
 
 Podrobnosti: [sablona/README.md](./sablona/README.md).
 
+### Nový web na jedno zaškrtnutie
+
+Projekt má prepínač **„Založiť web z predvolenej šablóny"**. Keď je zapnutý
+a hub má v prostredí tokeny, pri uložení projektu sa stane toto:
+
+1. z template repozitára vznikne nový repozitár pomenovaný podľa kódu projektu,
+2. na Verceli sa založí projekt napojený na neho s vyplnenými `HUB_PROJEKT`,
+   `HUB_URL` a `HUB_SECRET`,
+3. spustí sa prvé nasadenie a jeho adresa sa aj s tajomstvom preplachu zapíše
+   späť do projektu — web je tým napojený obojsmerne.
+
+Priebeh aj prípadná chyba sú vidieť priamo pri projekte, nie v serverless logu.
+Zlyhanie nasadenia nikdy nezhodí založenie projektu.
+
+**Čo na to treba jednorazovo:**
+
+```bash
+# 1) zo šablóny sprav samostatný repozitár
+cp -r sablona /tmp/zjav-web && cd /tmp/zjav-web
+git init -b main && git add -A && git commit -m "feat: predvolená šablóna webu"
+gh repo create kubbkoz/zjav-web --private --source=. --push
+
+# 2) na GitHube: Settings → General → zaškrtni „Template repository"
+
+# 3) do premenných hubu doplň GITHUB_TOKEN, SABLONA_REPO a VERCEL_TOKEN
+#    (presný zoznam je v .env.example)
+```
+
+Bez tokenov je mechanizmus vypnutý a weby sa zakladajú ručne podľa návodu
+v [sablona/README.md](./sablona/README.md) — tri premenné a import na Vercel.
+
 ## Ako sa napojí web
 
 ### 1. Založ projekt
