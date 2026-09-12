@@ -538,3 +538,88 @@ a:focus-visible,
   background: color-mix(in srgb, #ff5d5d 18%, transparent);
   color: var(--theme-elevation-800);
 }
+
+/* ── Návod na napojenie pri projekte ──────────────────────────────────── */
+
+.napojenie {
+  margin: 0.5rem 0 1.5rem;
+  padding: 1rem 1.1rem 1.2rem;
+  border: 1px solid var(--theme-elevation-100);
+  border-left: 2px solid var(--zjav);
+  border-radius: var(--style-radius-l);
+  background: var(--theme-elevation-0);
+}
+
+.napojenie__uvod,
+.napojenie__prazdne {
+  margin: 0 0 1rem;
+  font-size: 0.85rem;
+  color: var(--theme-elevation-500);
+}
+
+.napojenie__prazdne {
+  margin: 0;
+}
+
+.napojenie__blok + .napojenie__blok {
+  margin-top: 1.1rem;
+}
+
+.napojenie__hlavicka {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.napojenie__nadpis {
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--theme-elevation-600);
+}
+
+.napojenie__kopiruj {
+  font: inherit;
+  font-size: 0.72rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--theme-elevation-150);
+  background: transparent;
+  color: var(--theme-elevation-600);
+  cursor: pointer;
+  transition: border-color 0.18s ease, color 0.18s ease;
+}
+
+.napojenie__kopiruj:hover {
+  border-color: var(--zjav);
+  color: var(--zjav);
+}
+
+.napojenie__popis {
+  margin: 0 0 0.45rem;
+  font-size: 0.75rem;
+  color: var(--theme-elevation-450);
+}
+
+.napojenie__kod {
+  margin: 0;
+  padding: 0.75rem 0.9rem;
+  border-radius: var(--style-radius-m);
+  background: var(--theme-elevation-50);
+  border: 1px solid var(--theme-elevation-100);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.55;
+  overflow-x: auto;
+  white-space: pre;
+  color: var(--theme-elevation-800);
+}
+
+.napojenie__poznamka {
+  margin: 1.1rem 0 0;
+  font-size: 0.78rem;
+  color: var(--theme-elevation-500);
+}

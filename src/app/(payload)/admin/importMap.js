@@ -21,6 +21,7 @@ import { StrikethroughFeatureClient as StrikethroughFeatureClient_e70f5e05f09f93
 import { UnderlineFeatureClient as UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
+import { NavodNaNapojenie as NavodNaNapojenie_a14d2c6827218ca36eee8e38d1c588f9 } from '../../../payload/admin/NavodNaNapojenie'
 import { ZjavIkona as ZjavIkona_ac4418e04c24f8aba24b1d56452c184c } from '../../../payload/admin/ZjavZnacka'
 import { ZjavLogo as ZjavLogo_ac4418e04c24f8aba24b1d56452c184c } from '../../../payload/admin/ZjavZnacka'
 import { Nastenka as Nastenka_3b5666b868526289d90d0cf494c9cb1e } from '../../../payload/admin/Nastenka'
@@ -55,6 +56,7 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#UnderlineFeatureClient": UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#BoldFeatureClient": BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
+  "/payload/admin/NavodNaNapojenie#NavodNaNapojenie": NavodNaNapojenie_a14d2c6827218ca36eee8e38d1c588f9,
   "/payload/admin/ZjavZnacka#ZjavIkona": ZjavIkona_ac4418e04c24f8aba24b1d56452c184c,
   "/payload/admin/ZjavZnacka#ZjavLogo": ZjavLogo_ac4418e04c24f8aba24b1d56452c184c,
   "/payload/admin/Nastenka#Nastenka": Nastenka_3b5666b868526289d90d0cf494c9cb1e,

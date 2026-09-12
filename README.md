@@ -144,6 +144,37 @@ gh repo create kubbkoz/zjav-web --private --source=. --push
 Bez tokenov je mechanizmus vypnutý a weby sa zakladajú ručne podľa návodu
 v [sablona/README.md](./sablona/README.md) — tri premenné a import na Vercel.
 
+## Napojenie existujúceho webu
+
+Hub nerozlišuje, čo je na druhom konci. Je to obyčajné HTTP rozhranie bez SDK
+a bez zámku — napojí sa naň šablóna, hocijaký existujúci Next.js projekt,
+Astro, SvelteKit aj server v PHP. Stačí vedieť čítať JSON.
+
+Každý projekt má v administrácii panel **Napojenie webu** s hotovými
+premennými aj adresami, vygenerovanými pre jeho kód. Skopíruješ a vložíš.
+
+Tri úrovne podľa toho, koľko sa oplatí investovať:
+
+**1. Len kúsok webu (30 minút).** Existujúci web si necháš, ale cenník alebo
+novinky ťaháš z CMS. Jeden `fetch` v serverovom komponente:
+
+```ts
+const hub = "https://cms.zjav.sk/api/web/<kod>";
+const { docs } = await fetch(`${hub}/katalog?limit=12`, {
+  next: { tags: ["hub"], revalidate: 300 },
+}).then((r) => r.json());
+```
+
+**2. Celý obsah (pol dňa).** Skopíruj `sablona/src/hub/` (štyri súbory: klient,
+typy, renderer textu z editora, adresa webu) a používaj hotové funkcie
+`zaklad()`, `stranka()`, `prispevky()`, `katalog()`, `udalosti()`. Vzhľad si
+web nechá vlastný.
+
+**3. Celý web zo šablóny.** Pozri [sablona/README.md](./sablona/README.md).
+
+Na okamžitú aktualizáciu obsahu doplň na web endpoint `/api/revalidate`
+(kód je v tom istom paneli) a jeho adresu zapíš do projektu.
+
 ## Ako sa napojí web
 
 ### 1. Založ projekt
