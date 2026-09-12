@@ -291,7 +291,17 @@ export interface Projekty {
    */
   revalidateSecret?: string | null;
   /**
-   * Odlíši projekt v prepínači a na nástenke. Hex, napr. #2f6f4e.
+   * Zapni pred uložením nového projektu. Web dostane kód tohto projektu a hneď z neho ťahá obsah.
+   */
+  nasaditWeb?: boolean | null;
+  nasadenie?: {
+    stav?: ('nenasadene' | 'hotovo' | 'chyba') | null;
+    repozitar?: string | null;
+    adresa?: string | null;
+    poznamka?: string | null;
+  };
+  /**
+   * Odlíši projekt v prepínači a na nástenke. Hex, napr. #00cfff.
    */
   farba?: string | null;
   updatedAt: string;
@@ -1205,6 +1215,9 @@ export interface Presmerovania {
  */
 export interface Odpovede {
   id: number;
+  /**
+   * Web, ktorému tento záznam patrí. Mimo neho ho nikto neuvidí.
+   */
   projekt: number | Projekty;
   formular: number | Formulare;
   /**
@@ -1237,6 +1250,9 @@ export interface Odpovede {
  */
 export interface Zaznamy {
   id: number;
+  /**
+   * Web, ktorému tento záznam patrí. Mimo neho ho nikto neuvidí.
+   */
   projekt: number | Projekty;
   akcia?: ('vytvorenie' | 'uprava' | 'zverejnenie' | 'zmazanie') | null;
   kolekcia?: string | null;
@@ -2095,6 +2111,15 @@ export interface ProjektySelect<T extends boolean = true> {
   verejneCitanie?: T;
   revalidateUrl?: T;
   revalidateSecret?: T;
+  nasaditWeb?: T;
+  nasadenie?:
+    | T
+    | {
+        stav?: T;
+        repozitar?: T;
+        adresa?: T;
+        poznamka?: T;
+      };
   farba?: T;
   updatedAt?: T;
   createdAt?: T;
