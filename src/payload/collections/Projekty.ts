@@ -163,6 +163,20 @@ export const Projekty: CollectionConfig = {
           },
         },
         {
+          /**
+           * Nie je to pole, je to návod. Sedí priamo pod nastaveniami
+           * napojenia, lebo práve tam si človek kladie otázku „a čo mám teda
+           * dať do webu" — a odpoveď má byť na dosah, nie v dokumentácii.
+           */
+          name: "navodNaNapojenie",
+          type: "ui",
+          admin: {
+            components: {
+              Field: "/payload/admin/NavodNaNapojenie#NavodNaNapojenie",
+            },
+          },
+        },
+        {
           name: "revalidateSecret",
           label: "Tajomstvo pre prepláchnutie",
           type: "text",
