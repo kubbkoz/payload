@@ -17,7 +17,8 @@
     "payload:migrate": "npm run payload -- migrate --disable-transpile",
     "payload:migrate:create": "node scripts/migracia.mjs",
     "payload:migrate:status": "npm run payload -- migrate:status --disable-transpile",
-    "payload:migrate:fix": "node scripts/migracia.mjs --iba-oprava"
+    "payload:migrate:fix": "node scripts/migracia.mjs --iba-oprava",
+    "ikony": "node scripts/ikony.mjs"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.88.0",

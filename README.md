@@ -1,4 +1,4 @@
-# ZJAV_ CMS
+# ZJAV CMS — Content Hub
 
 Jedna administrácia pre ľubovoľný počet webov. Postavené na Payload 3, Next 16
 a Postgrese.
@@ -210,6 +210,15 @@ Predvolená je tmavá; dopĺňa ju `src/middleware.ts` do cookie `payload-theme`
 ešte pred vykreslením, takže ani prihlasovacia obrazovka nebliká bielou.
 Prepínač svetlá/tmavá je v bočnom menu a voľba človeka predvolenú prebije.
 
+Každá položka menu aj karta na nástenke má ikonu. Nie sú to obrázky, ale masky:
+SVG ide do `mask-image` a farbu dáva `background-color`, takže sa celá sada
+prefarbí jednou premennou — v tme azúrová, na svetle čierna. Dáta sú
+v `scripts/ikony.mjs`, výstup `src/payload/admin/ikony.css`:
+
+```bash
+npm run ikony       # po pridaní kolekcie dopíš slug + SVG a pregeneruj
+```
+
 ## Štruktúra repozitára
 
 ```
@@ -224,10 +233,11 @@ src/
     collections/           16 kolekcií
     bloky/                 bloky page buildera
     polia/                 pole projektu, slug, SEO, relácie v projekte
-    admin/                 prepínač projektu, nástenka, štýly
+    admin/                 prepínač projektu, prepínač témy, nástenka, štýly, ikony
   app/(payload)/           administrácia a REST/GraphQL Payloadu
   app/(hub)/               verejná úvodná obrazovka hubu
   middleware.ts            predvolene tmavý panel
   lib/                     pomocné funkcie API a textu
   migrations/              migrácie databázy
+scripts/ikony.mjs          generátor ikon administrácie
 ```

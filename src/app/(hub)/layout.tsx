@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import "../../styles/hub-web.css";
 
 export const metadata: Metadata = {
-  title: "ZJAV_ — obsahový hub",
-  description: "Jedna administrácia pre ľubovoľný počet napojených webov.",
+  title: "ZJAV CMS — Content Hub",
+  description: "Content Hub — jedna administrácia pre ľubovoľný počet napojených webov.",
   robots: { index: false, follow: false },
 };
 

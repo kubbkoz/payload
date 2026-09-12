@@ -11,10 +11,11 @@ export default function Domov() {
     <main className="hub-web">
       <p className="hub-web__znacka">
         ZJAV<span className="hub-web__kurzor">_</span>
+        <span className="hub-web__dovetok">CMS</span>
       </p>
 
       <header className="hub-web__hlavicka">
-        <p className="hub-web__stitok">Obsahový hub</p>
+        <p className="hub-web__stitok">Content Hub</p>
         <h1>Jedna administrácia pre všetky tvoje weby</h1>
         <p className="hub-web__uvod">
           Obsah, používatelia a práva na jednom mieste. Každý napojený web si svoje dáta

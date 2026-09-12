@@ -311,8 +311,14 @@ a:focus-visible,
   gap: 0.6rem;
 }
 
+.zjav-znacka__dovetok {
+  margin-inline-start: 0.2em;
+  font-weight: 600;
+  color: var(--theme-elevation-500);
+}
+
 .zjav-logo .zjav-znacka {
-  font-size: 3.2rem;
+  font-size: 3rem;
 }
 
 .zjav-logo__podtitul {
