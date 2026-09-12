@@ -8,6 +8,7 @@ každý web **projektom**. Obsah, ľudia aj práva sú na jednom mieste; napojen
 si svoje dáta ťahá cez HTTP a sám žiadnu databázu ani prihlasovanie nepotrebuje.
 
 - **Architektúra a rozhodnutia:** [ARCHITEKTURA.md](./ARCHITEKTURA.md)
+- **Šablóna webu:** [sablona/](./sablona/README.md) — predvolený Next.js web, ktorý sa na hub napojí tromi premennými
 - **Administrácia:** `/admin`
 - **Rozhranie pre weby:** `/api/web/<kód projektu>/…`
 
@@ -96,6 +97,21 @@ je to fronta naplánovaného zverejnenia. Program Hobby vie cron spúšťať len
 denne; tam zmeň rozvrh na `0 * * * *` alebo si frontu spúšťaj externe.
 
 ---
+
+## Šablóna webu
+
+V `sablona/` je predvolený Next.js web, ktorý si celý obsah ťahá z tohto hubu.
+Nemá databázu ani administráciu — má `HUB_PROJEKT` a všetko ostatné je tu.
+
+Nový web preto nezačína písaním backendu: založíš projekt, nasadíš šablónu
+s jeho kódom a hneď stojí funkčný web s hotovým blogom, katalógom, udalosťami
+a formulármi. Upravuje sa už len frontend.
+
+Šablóna býva v tomto repozitári zámerne. Kontrakt delivery API a jeho klient sa
+tak verzujú spolu — zmena API a jej dopad na weby idú v jednom commite, nie
+v dvoch repozitároch, kde si druhý všimne až produkcia.
+
+Podrobnosti: [sablona/README.md](./sablona/README.md).
 
 ## Ako sa napojí web
 
@@ -240,4 +256,5 @@ src/
   lib/                     pomocné funkcie API a textu
   migrations/              migrácie databázy
 scripts/ikony.mjs          generátor ikon administrácie
+sablona/                   predvolená šablóna webu (samostatný Next.js projekt)
 ```
