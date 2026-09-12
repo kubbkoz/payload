@@ -1,8 +1,8 @@
 {
-  "name": "hub-cms",
+  "name": "zjav-cms",
   "version": "1.0.0",
   "private": true,
-  "description": "Multi-projektový Payload CMS hub — jedna administrácia pre ľubovoľný počet webov.",
+  "description": "Obsahový hub ZJAV_ — jedna administrácia pre ľubovoľný počet napojených webov.",
   "engines": {
     "node": ">=20.9.0"
   },
@@ -26,6 +26,7 @@
     "@payloadcms/richtext-lexical": "^3.88.0",
     "@payloadcms/storage-vercel-blob": "^3.88.0",
     "@payloadcms/translations": "^3.88.0",
+    "@payloadcms/ui": "^3.88.0",
     "graphql": "^16.11.0",
     "next": "16.3.1",
     "payload": "^3.88.0",

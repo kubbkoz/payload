@@ -118,7 +118,11 @@ export const Nastenka = async (props: ServerProps) => {
             <article
               key={String(projekt.id)}
               className="hub-karta"
-              style={{ borderTopColor: (projekt as { farba?: string }).farba || "#2f6f4e" }}
+              style={
+                {
+                  "--farba-projektu": (projekt as { farba?: string }).farba || "#00cfff",
+                } as React.CSSProperties
+              }
             >
               <h3 className="hub-karta__nazov">
                 {String((projekt as { nazov?: unknown }).nazov ?? "Projekt")}

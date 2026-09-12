@@ -53,19 +53,30 @@ export default buildConfig({
   serverURL,
   admin: {
     user: Users.slug,
-    theme: "light",
+    // Obe témy. Panel je pracovný nástroj na celý deň a či sa v ňom lepšie
+    // sedí v tme alebo na svetle, nie je vec konfigurácie — je to vec toho,
+    // ako práve svieti do monitora. Prepínač je v bočnom menu.
+    theme: "all",
     // Vlastné komponenty sa hľadajú od src/, takže "/payload/admin/Foo#Foo"
     // vedie na src/payload/admin/Foo.tsx. Bez toho ich generate:importmap
     // hľadá od koreňa projektu a nenájde.
     importMap: { baseDir: dirname },
     components: {
       providers: ["/payload/admin/HubStyl#HubStyl"],
-      beforeNavLinks: ["/payload/admin/PrepinacProjektu#PrepinacProjektu"],
+      beforeNavLinks: [
+        "/payload/admin/PrepinacProjektu#PrepinacProjektu",
+        "/payload/admin/PrepinacTemy#PrepinacTemy",
+      ],
       beforeDashboard: ["/payload/admin/Nastenka#Nastenka"],
+      graphics: {
+        Icon: "/payload/admin/ZjavZnacka#ZjavIkona",
+        Logo: "/payload/admin/ZjavZnacka#ZjavLogo",
+      },
     },
     meta: {
-      titleSuffix: " · HUB",
-      description: "Spoločná administrácia pre všetky napojené weby.",
+      titleSuffix: " · ZJAV_",
+      description: "Obsahový hub ZJAV_ — jedna administrácia pre všetky napojené weby.",
+      icons: [{ rel: "icon", type: "image/svg+xml", url: "/zjav-ikona.svg" }],
     },
   },
   /**

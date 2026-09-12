@@ -41,8 +41,8 @@ export const VyberProjektu = ({ projekty }: { projekty: Polozka[] }) => {
   const aktivny = projekty.find((p) => p.id === zvoleny);
 
   return (
-    <div className="hub-prepinac">
-      <label className="hub-prepinac__popis" htmlFor="hub-prepinac-vyber">
+    <div className="hub-panel hub-prepinac">
+      <label className="hub-popis" htmlFor="hub-prepinac-vyber">
         Projekt
       </label>
       <div className="hub-prepinac__riadok">

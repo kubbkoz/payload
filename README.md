@@ -1,4 +1,4 @@
-# HUB CMS
+# ZJAV_ CMS
 
 Jedna administrácia pre ľubovoľný počet webov. Postavené na Payload 3, Next 16
 a Postgrese.
@@ -84,7 +84,7 @@ Po pridaní alebo zmene vlastného komponentu administrácie spusti
 | Premenná | Povinná | Na čo |
 | --- | --- | --- |
 | `PAYLOAD_SECRET` | áno | Podpisovanie prihlasovacích tokenov (`openssl rand -hex 32`) |
-| `NEXT_PUBLIC_SERVER_URL` | áno | Verejná adresa hubu |
+| `NEXT_PUBLIC_SERVER_URL` | áno | Verejná adresa hubu — pre produkciu `https://cms.zjav.sk` |
 | `DATABASE_URL` | áno | Postgres (vloží integrácia) |
 | `BLOB_READ_WRITE_TOKEN` | prakticky áno | Úložisko súborov |
 | `RESEND_API_KEY`, `EMAIL_FROM` | nie | Obnova hesla a upozornenia z formulárov |
@@ -195,6 +195,21 @@ await fetch(`${hub}/api/web/vinaren/formular/kontakt`, {
 
 ---
 
+## Vzhľad
+
+Panel nosí značku ZJAV_: modrošedá škála, azúrová `#00CFFF` na všetkom
+stlačiteľnom, mätová `#00E5A0` na potvrdeniach, Oxanium na nadpisy, Inter na
+text a JetBrains Mono na kód — tie isté hodnoty, aké má web zjav.sk.
+
+Rebranding nie je prefarbovanie tried. Payload stavia celé rozhranie na jednej
+škále `--color-base-0…1000` a v tmavej téme ju číta odzadu, takže stačí tú
+škálu vymeniť v `src/payload/admin/hub.css` a prefarbí sa všetko naraz —
+vrátane tabuliek, polí a stavov, v oboch témach.
+
+Predvolená je tmavá; dopĺňa ju `src/middleware.ts` do cookie `payload-theme`
+ešte pred vykreslením, takže ani prihlasovacia obrazovka nebliká bielou.
+Prepínač svetlá/tmavá je v bočnom menu a voľba človeka predvolenú prebije.
+
 ## Štruktúra repozitára
 
 ```
@@ -212,6 +227,7 @@ src/
     admin/                 prepínač projektu, nástenka, štýly
   app/(payload)/           administrácia a REST/GraphQL Payloadu
   app/(hub)/               verejná úvodná obrazovka hubu
+  middleware.ts            predvolene tmavý panel
   lib/                     pomocné funkcie API a textu
   migrations/              migrácie databázy
 ```

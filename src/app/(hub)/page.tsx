@@ -9,6 +9,10 @@ import Link from "next/link";
 export default function Domov() {
   return (
     <main className="hub-web">
+      <p className="hub-web__znacka">
+        ZJAV<span className="hub-web__kurzor">_</span>
+      </p>
+
       <header className="hub-web__hlavicka">
         <p className="hub-web__stitok">Obsahový hub</p>
         <h1>Jedna administrácia pre všetky tvoje weby</h1>

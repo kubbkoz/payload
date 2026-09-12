@@ -176,10 +176,10 @@ export const Projekty: CollectionConfig = {
       name: "farba",
       label: "Farba projektu",
       type: "text",
-      defaultValue: "#2f6f4e",
+      defaultValue: "#00cfff",
       admin: {
         position: "sidebar",
-        description: "Odlíši projekt v prepínači a na nástenke. Hex, napr. #2f6f4e.",
+        description: "Odlíši projekt v prepínači a na nástenke. Hex, napr. #00cfff.",
       },
     },
   ],

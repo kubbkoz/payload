@@ -21,8 +21,11 @@ import { StrikethroughFeatureClient as StrikethroughFeatureClient_e70f5e05f09f93
 import { UnderlineFeatureClient as UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
+import { ZjavIkona as ZjavIkona_ac4418e04c24f8aba24b1d56452c184c } from '../../../payload/admin/ZjavZnacka'
+import { ZjavLogo as ZjavLogo_ac4418e04c24f8aba24b1d56452c184c } from '../../../payload/admin/ZjavZnacka'
 import { Nastenka as Nastenka_3b5666b868526289d90d0cf494c9cb1e } from '../../../payload/admin/Nastenka'
 import { PrepinacProjektu as PrepinacProjektu_30ae60c0ca1b59a6219ccf37238be616 } from '../../../payload/admin/PrepinacProjektu'
+import { PrepinacTemy as PrepinacTemy_12ab642e0ad425c344efac50236d5c16 } from '../../../payload/admin/PrepinacTemy'
 import { HubStyl as HubStyl_e8eaa50cf0048630f2bcd06a1e775d41 } from '../../../payload/admin/HubStyl'
 import { VercelBlobClientUploadHandler as VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e } from '@payloadcms/storage-vercel-blob/client'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
@@ -52,8 +55,11 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#UnderlineFeatureClient": UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#BoldFeatureClient": BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
+  "/payload/admin/ZjavZnacka#ZjavIkona": ZjavIkona_ac4418e04c24f8aba24b1d56452c184c,
+  "/payload/admin/ZjavZnacka#ZjavLogo": ZjavLogo_ac4418e04c24f8aba24b1d56452c184c,
   "/payload/admin/Nastenka#Nastenka": Nastenka_3b5666b868526289d90d0cf494c9cb1e,
   "/payload/admin/PrepinacProjektu#PrepinacProjektu": PrepinacProjektu_30ae60c0ca1b59a6219ccf37238be616,
+  "/payload/admin/PrepinacTemy#PrepinacTemy": PrepinacTemy_12ab642e0ad425c344efac50236d5c16,
   "/payload/admin/HubStyl#HubStyl": HubStyl_e8eaa50cf0048630f2bcd06a1e775d41,
   "@payloadcms/storage-vercel-blob/client#VercelBlobClientUploadHandler": VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
