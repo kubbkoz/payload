@@ -1,0 +1,206 @@
+/* ZJAV_ — verejná tvár hubu. Tmavá zostava a typografia z webu zjav.sk. */
+
+@import url("https://fonts.googleapis.com/css2?family=Oxanium:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
+
+:root {
+  color-scheme: dark;
+  --pozadie: #06080d;
+  --karta: #0e1018;
+  --linka: #161a25;
+  --text: #f2f4f8;
+  --tlmene: #a0abcb;
+  --zjav: #00cfff;
+  --zjav-tmava: #0099cc;
+  --signal: #00e5a0;
+  --radius: 0.75rem;
+  --pismo: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --pismo-display: "Oxanium", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --pismo-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--pozadie);
+  color: var(--text);
+  font-family: var(--pismo);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  /* Rovnaký bodový raster ako na webe — drží plochu, nekričí. */
+  background-image: radial-gradient(circle, var(--linka) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.hub-web {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 7vw, 6rem) 1.25rem 5rem;
+}
+
+.hub-web__znacka {
+  font-family: var(--pismo-display);
+  font-weight: 700;
+  font-size: 1.6rem;
+  letter-spacing: -0.02em;
+  margin: 0 0 2.5rem;
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.hub-web__kurzor {
+  color: var(--zjav);
+  text-shadow: 0 0 24px rgba(0, 207, 255, 0.6);
+  animation: kurzor 1.1s steps(1) infinite;
+}
+
+@keyframes kurzor {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hub-web__kurzor {
+    animation: none;
+  }
+}
+
+.hub-web__stitok {
+  margin: 0 0 0.85rem;
+  font-family: var(--pismo-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--zjav);
+}
+
+.hub-web h1 {
+  margin: 0 0 1.1rem;
+  font-family: var(--pismo-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 6vw, 3.6rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  max-width: 18ch;
+}
+
+.hub-web__uvod {
+  margin: 0 0 2.2rem;
+  max-width: 42rem;
+  font-size: clamp(1rem, 2.2vw, 1.1rem);
+  color: var(--tlmene);
+}
+
+.hub-web__tlacidlo {
+  display: inline-block;
+  padding: 0.8rem 1.6rem;
+  border-radius: 999px;
+  background: var(--zjav);
+  color: var(--pozadie);
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 0 16px rgba(0, 207, 255, 0.35);
+  transition:
+    box-shadow 0.25s ease,
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hub-web__tlacidlo:hover {
+  box-shadow: 0 0 32px rgba(0, 207, 255, 0.55);
+  transform: translateY(-2px);
+}
+
+.hub-web__sekcia {
+  margin-top: 3.5rem;
+  padding-top: 2.2rem;
+  border-top: 1px solid var(--linka);
+}
+
+.hub-web__sekcia h2 {
+  margin: 0 0 1.1rem;
+  font-family: var(--pismo-display);
+  font-size: 1.15rem;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+.hub-web__kroky {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: var(--tlmene);
+  display: grid;
+  gap: 0.7rem;
+}
+
+.hub-web__kroky::marker,
+.hub-web__kroky li::marker {
+  color: var(--zjav);
+  font-family: var(--pismo-mono);
+}
+
+.hub-web__kroky strong {
+  color: var(--text);
+}
+
+.hub-web__tabulka {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  display: block;
+  overflow-x: auto;
+}
+
+.hub-web__tabulka th,
+.hub-web__tabulka td {
+  text-align: left;
+  padding: 0.65rem 0.85rem 0.65rem 0;
+  border-bottom: 1px solid var(--linka);
+  vertical-align: top;
+}
+
+.hub-web__tabulka th {
+  font-family: var(--pismo-display);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--tlmene);
+}
+
+.hub-web__tabulka td:first-child {
+  white-space: nowrap;
+  padding-right: 1.5rem;
+}
+
+.hub-web__tabulka td:last-child {
+  color: var(--tlmene);
+}
+
+code {
+  font-family: var(--pismo-mono);
+  font-size: 0.86em;
+  color: var(--zjav);
+  background: var(--karta);
+  border: 1px solid var(--linka);
+  border-radius: var(--radius);
+  padding: 0.12rem 0.4rem;
+}
+
+.hub-web__poznamka {
+  margin-top: 1.4rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--linka);
+  border-left: 2px solid var(--signal);
+  border-radius: var(--radius);
+  background: var(--karta);
+  color: var(--tlmene);
+  font-size: 0.88rem;
+}
