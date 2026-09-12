@@ -3,6 +3,9 @@ import { notFound, permanentRedirect, redirect } from "next/navigation";
 
 import { stranka as nacitajStranku, zaklad } from "@/hub/klient";
 import { Bloky } from "@/komponenty/bloky";
+import { PrazdnyWeb } from "@/komponenty/PrazdnyWeb";
+
+const ADRESA_CMS = (process.env.HUB_URL || "https://cms.zjav.sk").replace(/\/+$/, "");
 
 /**
  * Stránka poskladaná z blokov, načítaná podľa cesty.
@@ -22,6 +25,13 @@ export async function StrankaCMS({ cesta }: { cesta: string }) {
       if (presmerovanie.kod === 301) permanentRedirect(presmerovanie.na);
       redirect(presmerovanie.na);
     }
+
+    // Chýbajúca úvodná stránka nie je 404, je to prázdny projekt. Rozdiel je
+    // podstatný: 404 vyzerá ako pokazený web, hoci je len nenaplnený.
+    if (cesta === "/") {
+      return <PrazdnyWeb nastavenia={info?.nastavenia ?? null} adresaCms={ADRESA_CMS} />;
+    }
+
     notFound();
   }
 
@@ -43,7 +53,11 @@ export async function StrankaCMS({ cesta }: { cesta: string }) {
 
 export async function metadataStranky(cesta: string): Promise<Metadata> {
   const data = await nacitajStranku(cesta).catch(() => null);
-  if (!data) return {};
+  // Prázdny web nemá čo robiť vo vyhľadávaní — zaindexovaná hláška „web je
+  // pripravený" je horšia vizitka než žiadny výsledok.
+  if (!data) {
+    return cesta === "/" ? { title: "Web sa pripravuje", robots: { index: false, follow: false } } : {};
+  }
   return {
     title: data.seo.titulok ?? data.nazov,
     description: data.seo.popis ?? data.perex ?? undefined,

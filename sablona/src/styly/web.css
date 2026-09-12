@@ -439,3 +439,16 @@ p { margin: 0 0 1em; }
 .chyba { max-width: var(--sirka-obsahu); margin-inline: auto; padding: clamp(4rem, 12vw, 8rem) 1.25rem; text-align: center; }
 .chyba__kod { font-size: 4rem; font-weight: 700; color: var(--hlavna); line-height: 1; margin-bottom: 0.5rem; }
 .chyba pre { text-align: start; background: var(--plocha); border: 1px solid var(--linka); border-radius: var(--radius); padding: 1rem; overflow-x: auto; font-size: 0.85rem; }
+
+.prazdny__kroky {
+  text-align: start;
+  max-width: 34rem;
+  margin: 2rem auto;
+  padding-inline-start: 1.3rem;
+  color: var(--tlmene);
+  display: grid;
+  gap: 0.7rem;
+}
+
+.prazdny__kroky strong { color: var(--text); }
+.prazdny__kroky code { font-size: 0.85em; }
