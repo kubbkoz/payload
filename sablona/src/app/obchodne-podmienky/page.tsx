@@ -7,7 +7,7 @@ import { BohatyTextBlok } from "@/hub/richtext";
 export const metadata: Metadata = { title: "Obchodné podmienky" };
 
 export default async function ObchodnePodmienky() {
-  const data = await zaklad();
+  const data = await zaklad().catch(() => null);
   const obsah = data?.nastavenia.pravne.obchodnePodmienky;
   if (!obsah) notFound();
 

@@ -68,9 +68,25 @@ export type VysledokNasadenia = {
   poznamka: string;
 };
 
+/** Z „https://rental.zjav.sk/" spraví „rental.zjav.sk" — Vercel chce holý host. */
+const holyHost = (adresa: string | null | undefined): string | null => {
+  if (!adresa?.trim()) return null;
+  try {
+    return new URL(adresa.includes("://") ? adresa : `https://${adresa}`).host.toLowerCase();
+  } catch {
+    return null;
+  }
+};
+
 export async function zalozWeb(
   req: PayloadRequest,
-  projekt: { id: number | string; kod: string; nazov: string; revalidateSecret?: string | null },
+  projekt: {
+    id: number | string;
+    kod: string;
+    nazov: string;
+    revalidateSecret?: string | null;
+    domenaHlavna?: string | null;
+  },
 ): Promise<VysledokNasadenia> {
   const n = nastavenieNasadenia();
   if (!n) {
@@ -112,10 +128,15 @@ export async function zalozWeb(
     const tajomstvo = projekt.revalidateSecret || randomBytes(24).toString("hex");
 
     // 2) Projekt na Verceli napojený na ten repozitár.
+    // Doména sa pridáva rovno pri zakladaní, ak ju projekt má. Bez toho by
+    // ostal jeden klik navyše práve na tom mieste, kde má byť flow bezšvíkový.
+    const domena = holyHost(projekt.domenaHlavna);
+
     const premenne = [
       { key: "HUB_PROJEKT", value: projekt.kod },
       { key: "HUB_URL", value: n.hubUrl },
       { key: "HUB_SECRET", value: tajomstvo },
+      ...(domena ? [{ key: "NEXT_PUBLIC_WEB_URL", value: `https://${domena}` }] : []),
     ].map((p) => ({
       ...p,
       type: "encrypted" as const,
@@ -137,6 +158,26 @@ export async function zalozWeb(
     });
     kroky.push(`Vercel projekt ${vercelProjekt.name}`);
 
+    // Doména môže zlyhať samostatne (chýbajúci DNS záznam, obsadené inde)
+    // a nemá to zhodiť zvyšok — web pobeží na vercel.app, kým sa to dorieši.
+    let domenaPripojena = false;
+    if (domena) {
+      try {
+        await posli(`https://api.vercel.com/v10/projects/${vercelProjekt.id}/domains${tim}`, {
+          method: "POST",
+          headers: {
+            authorization: `Bearer ${n.vercelToken}`,
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({ name: domena }),
+        });
+        domenaPripojena = true;
+        kroky.push(`doména ${domena}`);
+      } catch (chybaDomeny) {
+        kroky.push(`doména ${domena} sa nepripojila (${(chybaDomeny as Error).message})`);
+      }
+    }
+
     // 3) Prvé nasadenie. Samotné napojenie repozitára ho nespustí — Vercel
     //    čaká na push, ktorý po vytvorení zo šablóny už nepríde.
     const nasadenie = await posli(`https://api.vercel.com/v13/deployments${tim}`, {
@@ -154,7 +195,13 @@ export async function zalozWeb(
     });
     kroky.push("nasadenie spustené");
 
-    const adresa = nasadenie.alias?.[0] ? `https://${nasadenie.alias[0]}` : `https://${nasadenie.url}`;
+    // Adresa webu je doména, keď sa podarila; inak to, čo pridelil Vercel.
+    const adresa =
+      domenaPripojena && domena
+        ? `https://${domena}`
+        : nasadenie.alias?.[0]
+          ? `https://${nasadenie.alias[0]}`
+          : `https://${nasadenie.url}`;
 
     // Adresa na prepláchnutie aj tajomstvo sa dopíšu do projektu, takže web
     // je napojený obojsmerne hneď — bez toho by sa obsah menil, ale web by
@@ -176,7 +223,17 @@ export async function zalozWeb(
       stav: "hotovo",
       repozitar: repo.html_url,
       adresa,
-      poznamka: `Hotovo: ${kroky.join(", ")}. Prvé nasadenie môže trvať pár minút.`,
+      poznamka: [
+        `Hotovo: ${kroky.join(", ")}.`,
+        "Prvé nasadenie trvá pár minút.",
+        domena && !domenaPripojena
+          ? `Doménu ${domena} dopoj ručne vo Verceli a nasmeruj na ňu DNS.`
+          : domena
+            ? `Nezabudni na DNS: ${domena} → cname.vercel-dns.com.`
+            : "",
+      ]
+        .filter(Boolean)
+        .join(" "),
     };
   } catch (chyba) {
     req.payload.logger.error({ chyba }, "Automatické nasadenie webu zlyhalo.");

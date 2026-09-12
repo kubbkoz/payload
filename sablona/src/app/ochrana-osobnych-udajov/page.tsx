@@ -7,7 +7,7 @@ import { BohatyTextBlok } from "@/hub/richtext";
 export const metadata: Metadata = { title: "Ochrana osobných údajov" };
 
 export default async function OchranaUdajov() {
-  const data = await zaklad();
+  const data = await zaklad().catch(() => null);
   const obsah = data?.nastavenia.pravne.ochranaUdajov;
   // Kým prevádzka text nevyplní, stránka neexistuje — prázdne právne
   // oznámenie je horšie než žiadne.

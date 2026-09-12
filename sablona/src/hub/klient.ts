@@ -33,6 +33,20 @@ const PLATNOST = 300;
 
 export class ChybaHubu extends Error {}
 
+/**
+ * Prečo naposledy nevyšlo čítanie z hubu.
+ *
+ * Dôvod treba niekam odložiť, lebo `citaj` zlyhanie nevyhadzuje — vracia null.
+ * Vyhadzovanie sa zdalo správne, kým sa neukázalo, čo robí pri builde: Next
+ * predrenderuje stránky dopredu, výnimka z ktorejkoľvek z nich zhodí celý
+ * build a web sa nenasadí vôbec. Web bez obsahu je nepríjemnosť, web, ktorý
+ * sa nedá nasadiť, je stopka. Preto sa chyba zapamätá a rozloženie z nej
+ * vykreslí obrazovku „nie je napojený".
+ */
+let poslednaChyba: string | null = null;
+
+export const chybaHubu = (): string | null => poslednaChyba;
+
 const adresa = (cesta: string, parametre?: Record<string, string | number | undefined>) => {
   const url = new URL(`${ZAKLAD}/api/web/${PROJEKT}${cesta}`);
   for (const [kluc, hodnota] of Object.entries(parametre ?? {})) {
@@ -49,9 +63,9 @@ async function citaj<T>(
   parametre?: Record<string, string | number | undefined>,
 ): Promise<T | null> {
   if (!PROJEKT) {
-    throw new ChybaHubu(
-      "Chýba premenná HUB_PROJEKT — bez kódu projektu web nevie, čí obsah má ťahať.",
-    );
+    poslednaChyba =
+      "Chýba premenná HUB_PROJEKT — bez kódu projektu web nevie, čí obsah má ťahať.";
+    return null;
   }
 
   try {
@@ -66,13 +80,17 @@ async function citaj<T>(
 
     if (!odpoved.ok) {
       const telo = await odpoved.text().catch(() => "");
-      throw new ChybaHubu(`Hub odpovedal ${odpoved.status} na ${cesta}. ${telo.slice(0, 200)}`);
+      poslednaChyba = `Hub odpovedal ${odpoved.status} na ${cesta}. ${telo.slice(0, 200)}`;
+      console.error(poslednaChyba);
+      return null;
     }
 
+    poslednaChyba = null;
     return (await odpoved.json()) as T;
   } catch (chyba) {
-    if (chyba instanceof ChybaHubu) throw chyba;
-    throw new ChybaHubu(`Hub je nedostupný (${cesta}): ${(chyba as Error).message}`);
+    poslednaChyba = `Hub je nedostupný (${cesta}): ${(chyba as Error).message}`;
+    console.error(poslednaChyba);
+    return null;
   }
 }
 
