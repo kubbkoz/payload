@@ -687,3 +687,86 @@ a:focus-visible,
   background: color-mix(in srgb, var(--signal) 12%, transparent);
   color: var(--theme-elevation-800);
 }
+
+/* ── Odkaz na živý web ────────────────────────────────────────────────── */
+
+.otvorit-web {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.25rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: var(--style-radius-m);
+  background: var(--theme-elevation-0);
+  color: var(--theme-elevation-800);
+  font-weight: 600;
+  font-size: 0.88rem;
+  text-decoration: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.otvorit-web:hover {
+  border-color: var(--zjav);
+  box-shadow: 0 0 14px var(--zjav-ziara);
+  color: var(--theme-elevation-800);
+}
+
+.otvorit-web svg {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+  color: var(--zjav);
+}
+
+.otvorit-web > span {
+  display: grid;
+  min-width: 0;
+}
+
+.otvorit-web__host {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--theme-elevation-500);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.otvorit-web__prazdne {
+  margin: 0 0 1.25rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px dashed var(--theme-elevation-150);
+  border-radius: var(--style-radius-m);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--theme-elevation-450);
+}
+
+.otvorit-web__bunka {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  text-decoration: none;
+  color: var(--zjav-tmava);
+}
+
+html[data-theme="dark"] .otvorit-web__bunka {
+  color: var(--zjav);
+}
+
+.otvorit-web__bunka:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.otvorit-web__bunka svg {
+  width: 0.75rem;
+  height: 0.75rem;
+  opacity: 0.7;
+}
+
+.otvorit-web__ziadna {
+  color: var(--theme-elevation-400);
+}

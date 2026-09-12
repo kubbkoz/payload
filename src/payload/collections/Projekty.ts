@@ -113,7 +113,11 @@ export const Projekty: CollectionConfig = {
           name: "domenaHlavna",
           label: "Hlavná doména",
           type: "text",
-          admin: { description: "Napr. https://vinaren.zjav.sk — aj s protokolom." },
+          admin: {
+            description: "Napr. https://vinaren.zjav.sk — aj s protokolom.",
+            // V zozname projektov je z adresy rovno odkaz na živý web.
+            components: { Cell: "/payload/admin/OtvoritWeb#BunkaDomeny" },
+          },
         },
         {
           name: "domeny",
@@ -230,6 +234,18 @@ export const Projekty: CollectionConfig = {
           ],
         },
       ],
+    },
+    {
+      /**
+       * Odkaz na živý web. V bočnom paneli preto, že ten je viditeľný stále —
+       * aj keď je človek uprostred úprav v inej záložke dokumentu.
+       */
+      name: "otvoritWeb",
+      type: "ui",
+      admin: {
+        position: "sidebar",
+        components: { Field: "/payload/admin/OtvoritWeb#OtvoritWeb" },
+      },
     },
     {
       name: "farba",
