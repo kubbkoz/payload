@@ -1,0 +1,330 @@
+/*
+ * Ikony administrácie ZJAV_ CMS — bočné menu aj karty na nástenke.
+ *
+ * Ikona nie je obrázok, je maska: SVG ide do `mask-image` a farbu dáva
+ * `background-color`. Preto sa dá prefarbiť jedinou premennou a netreba dve
+ * sady súborov pre svetlú a tmavú tému — čo je presne to, čo tu chceme:
+ * v tme azúrová značková, na svetle čierna.
+ *
+ * Nič sa nesťahuje zvonku, všetky ikony sú v tomto súbore ako data URI.
+ * Jedno SVG, viewBox 0 0 24 24, fill none, stroke-width 1.25; kódované sú
+ * len znaky, ktoré v url() prekážajú.
+ *
+ * Payload dáva položkám menu stabilné id `nav-<slug>`, skupinám
+ * `nav-group-<nadpis>` a kartám na nástenke `card-<slug>`. Na id sa dá
+ * spoľahnúť aj pri aktívnej položke, ktorú Payload nevykresľuje ako <a>,
+ * ale ako <div>.
+ *
+ * Súbor zámerne nie je v @layer: Payload má celú administráciu v
+ * @layer payload-default a nevrstvené pravidlá ju prebijú bez ohľadu na
+ * špecificitu. Preto tu nikde netreba !important.
+ *
+ * Generované skriptom — úprava ikony znamená úpravu SVG a pregenerovanie.
+ */
+
+:root {
+  /* Na svetlom pozadí čierna: azúrová na bielej je bledá a ikona by
+     splynula skôr, než by čokoľvek povedala. */
+  --farba-ikony: #06080d;
+  --sila-ikony: 0.78;
+}
+
+html[data-theme="dark"] {
+  /* V tme značková azúrová — rovnaká, akú má web na tlačidlách. */
+  --farba-ikony: #00cfff;
+  --sila-ikony: 0.92;
+}
+
+/* ---------------------------------------------------------------- *
+ *  Bočné menu                                                      *
+ * ---------------------------------------------------------------- */
+
+/* Ikona je absolútne umiestnená, takže ju nepodčiarkne text-decoration pri
+   prejdení myšou a nezasahuje do toku textu — zvýraznenie aktívnej položky
+   tým ostáva nedotknuté. */
+[id="nav-group-Obsah"] .nav-group__label,
+[id="nav-group-Štruktúra webu"] .nav-group__label,
+[id="nav-group-Interakcia"] .nav-group__label,
+[id="nav-group-Prevádzka"] .nav-group__label,
+[id="nav-group-Systém"] .nav-group__label,
+#nav-stranky,
+#nav-prispevky,
+#nav-katalog,
+#nav-udalosti,
+#nav-kategorie,
+#nav-media,
+#nav-subory,
+#nav-navigacia,
+#nav-nastavenia-webu,
+#nav-presmerovania,
+#nav-formulare,
+#nav-odpovede,
+#nav-zaznamy,
+#nav-projekty,
+#nav-users,
+#nav-api-klienti {
+  position: relative;
+  padding-inline-start: 26px;
+}
+
+[id="nav-group-Obsah"] .nav-group__label::before,
+[id="nav-group-Štruktúra webu"] .nav-group__label::before,
+[id="nav-group-Interakcia"] .nav-group__label::before,
+[id="nav-group-Prevádzka"] .nav-group__label::before,
+[id="nav-group-Systém"] .nav-group__label::before,
+#nav-stranky::before,
+#nav-prispevky::before,
+#nav-katalog::before,
+#nav-udalosti::before,
+#nav-kategorie::before,
+#nav-media::before,
+#nav-subory::before,
+#nav-navigacia::before,
+#nav-nastavenia-webu::before,
+#nav-presmerovania::before,
+#nav-formulare::before,
+#nav-odpovede::before,
+#nav-zaznamy::before,
+#nav-projekty::before,
+#nav-users::before,
+#nav-api-klienti::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  transform: translateY(-50%);
+  background-color: var(--farba-ikony);
+  opacity: var(--sila-ikony);
+  pointer-events: none;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: 16px 16px;
+  mask-size: 16px 16px;
+}
+
+/* Nadpis skupiny je vlajkový riadok, nie odkaz. */
+.nav-group__toggle .nav-group__label {
+  line-height: 1.4;
+}
+
+/* ---------------------------------------------------------------- *
+ *  Nástenka                                                        *
+ * ---------------------------------------------------------------- */
+
+/*
+ * Karta je flexbox: nadpis vľavo, tlačidlo + vpravo. Ikona ide ako ::before
+ * priamo na kartu, takže je z nej riadny flex prvok pred nadpisom — nie
+ * prekrytie nadpisu ani absolútny prvok, ktorý by liezol pod tlačidlo +.
+ *
+ * Nadpisy skupín na nástenke ikonu zámerne nedostávajú: je to veľký <h2>,
+ * ktorý oddeľuje bloky, a pod ním už stojí celý riadok kariet s vlastnými
+ * ikonami. Ďalšia ikona pri veľkom nadpise by pôsobila ako omyl.
+ */
+#card-stranky::before,
+#card-prispevky::before,
+#card-katalog::before,
+#card-udalosti::before,
+#card-kategorie::before,
+#card-media::before,
+#card-subory::before,
+#card-navigacia::before,
+#card-nastavenia-webu::before,
+#card-presmerovania::before,
+#card-formulare::before,
+#card-odpovede::before,
+#card-zaznamy::before,
+#card-projekty::before,
+#card-users::before,
+#card-api-klienti::before {
+  content: "";
+  align-self: flex-start;
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  /* Karta má gap 16px, čo je pri ikone priveľa; -4px dá výslednú medzeru
+     12px a drží ikonu s nadpisom pokope. */
+  margin-inline-end: -4px;
+  background-color: var(--farba-ikony);
+  opacity: calc(var(--sila-ikony) - 0.18);
+  pointer-events: none;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: 20px 20px;
+  mask-size: 20px 20px;
+}
+
+@media (max-width: 768px) {
+  #card-stranky::before,
+  #card-prispevky::before,
+  #card-katalog::before,
+  #card-udalosti::before,
+  #card-kategorie::before,
+  #card-media::before,
+  #card-subory::before,
+  #card-navigacia::before,
+  #card-nastavenia-webu::before,
+  #card-presmerovania::before,
+  #card-formulare::before,
+  #card-odpovede::before,
+  #card-zaznamy::before,
+  #card-projekty::before,
+  #card-users::before,
+  #card-api-klienti::before {
+    width: 18px;
+    height: 18px;
+    -webkit-mask-size: 18px 18px;
+    mask-size: 18px 18px;
+  }
+}
+
+/* ---------------------------------------------------------------- *
+ *  Samotné ikony                                                   *
+ * ---------------------------------------------------------------- */
+
+/* Skupina: Obsah */
+[id="nav-group-Obsah"] .nav-group__label::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M12%202.8%202.9%207.5%2012%2012.2l9.1-4.7Z'/%3E%3Cpath%20d='m2.9%2012%209.1%204.7%209.1-4.7'/%3E%3Cpath%20d='m2.9%2016.5%209.1%204.7%209.1-4.7'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M12%202.8%202.9%207.5%2012%2012.2l9.1-4.7Z'/%3E%3Cpath%20d='m2.9%2012%209.1%204.7%209.1-4.7'/%3E%3Cpath%20d='m2.9%2016.5%209.1%204.7%209.1-4.7'/%3E%3C/svg%3E");
+}
+
+/* Skupina: Štruktúra webu */
+[id="nav-group-Štruktúra webu"] .nav-group__label::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Crect%20x='9'%20y='2.8'%20width='6'%20height='4.4'%20rx='1'/%3E%3Crect%20x='2.8'%20y='16.8'%20width='6'%20height='4.4'%20rx='1'/%3E%3Crect%20x='15.2'%20y='16.8'%20width='6'%20height='4.4'%20rx='1'/%3E%3Cpath%20d='M12%207.2v4.4'/%3E%3Cpath%20d='M5.8%2016.8v-2.6h12.4v2.6'/%3E%3Cpath%20d='M12%2011.6v2.6'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Crect%20x='9'%20y='2.8'%20width='6'%20height='4.4'%20rx='1'/%3E%3Crect%20x='2.8'%20y='16.8'%20width='6'%20height='4.4'%20rx='1'/%3E%3Crect%20x='15.2'%20y='16.8'%20width='6'%20height='4.4'%20rx='1'/%3E%3Cpath%20d='M12%207.2v4.4'/%3E%3Cpath%20d='M5.8%2016.8v-2.6h12.4v2.6'/%3E%3Cpath%20d='M12%2011.6v2.6'/%3E%3C/svg%3E");
+}
+
+/* Skupina: Interakcia */
+[id="nav-group-Interakcia"] .nav-group__label::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M20.4%2012.4a7.6%207.6%200%200%201-8.2%207.56L6.4%2021.2l1.24-5.8A7.6%207.6%200%201%201%2020.4%2012.4Z'/%3E%3Cpath%20d='M9%2011.2h6'/%3E%3Cpath%20d='M9%2014.2h3.6'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M20.4%2012.4a7.6%207.6%200%200%201-8.2%207.56L6.4%2021.2l1.24-5.8A7.6%207.6%200%201%201%2020.4%2012.4Z'/%3E%3Cpath%20d='M9%2011.2h6'/%3E%3Cpath%20d='M9%2014.2h3.6'/%3E%3C/svg%3E");
+}
+
+/* Skupina: Prevádzka */
+[id="nav-group-Prevádzka"] .nav-group__label::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M2.8%2012.4h4.2l2-5.2%203.4%2010%202.2-4.8h6.6'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M2.8%2012.4h4.2l2-5.2%203.4%2010%202.2-4.8h6.6'/%3E%3C/svg%3E");
+}
+
+/* Skupina: Systém */
+[id="nav-group-Systém"] .nav-group__label::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M12%203%204.8%205.7v5.8c0%204.4%203%208.1%207.2%209.5%204.2-1.4%207.2-5.1%207.2-9.5V5.7Z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M12%203%204.8%205.7v5.8c0%204.4%203%208.1%207.2%209.5%204.2-1.4%207.2-5.1%207.2-9.5V5.7Z'/%3E%3C/svg%3E");
+}
+
+/* Stránky */
+#nav-stranky::before,
+#card-stranky::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M14%202.8H7a2%202%200%200%200-2%202v14.4a2%202%200%200%200%202%202h10a2%202%200%200%200%202-2V7.8Z'/%3E%3Cpath%20d='M14%202.8V7.8h5'/%3E%3Cpath%20d='M8.4%2012.4h7.2'/%3E%3Cpath%20d='M8.4%2015.8h7.2'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M14%202.8H7a2%202%200%200%200-2%202v14.4a2%202%200%200%200%202%202h10a2%202%200%200%200%202-2V7.8Z'/%3E%3Cpath%20d='M14%202.8V7.8h5'/%3E%3Cpath%20d='M8.4%2012.4h7.2'/%3E%3Cpath%20d='M8.4%2015.8h7.2'/%3E%3C/svg%3E");
+}
+
+/* Príspevky */
+#nav-prispevky::before,
+#card-prispevky::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M3.4%206.2h13.2v13.6a1.6%201.6%200%200%201-1.6%201.6H5a1.6%201.6%200%200%201-1.6-1.6Z'/%3E%3Cpath%20d='M16.6%209h2.4a1.6%201.6%200%200%201%201.6%201.6v7.6a2%202%200%200%201-2%202'/%3E%3Cpath%20d='M6.4%209.4h7.2'/%3E%3Cpath%20d='M6.4%2012.6h7.2'/%3E%3Cpath%20d='M6.4%2015.8h4.4'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M3.4%206.2h13.2v13.6a1.6%201.6%200%200%201-1.6%201.6H5a1.6%201.6%200%200%201-1.6-1.6Z'/%3E%3Cpath%20d='M16.6%209h2.4a1.6%201.6%200%200%201%201.6%201.6v7.6a2%202%200%200%201-2%202'/%3E%3Cpath%20d='M6.4%209.4h7.2'/%3E%3Cpath%20d='M6.4%2012.6h7.2'/%3E%3Cpath%20d='M6.4%2015.8h4.4'/%3E%3C/svg%3E");
+}
+
+/* Katalóg */
+#nav-katalog::before,
+#card-katalog::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M20.4%208.4v7.2a1.8%201.8%200%200%201-.92%201.57l-6.6%203.7a1.8%201.8%200%200%201-1.76%200l-6.6-3.7A1.8%201.8%200%200%201%203.6%2015.6V8.4a1.8%201.8%200%200%201%20.92-1.57l6.6-3.7a1.8%201.8%200%200%201%201.76%200l6.6%203.7A1.8%201.8%200%200%201%2020.4%208.4Z'/%3E%3Cpath%20d='m3.85%207.5%208.15%204.6%208.15-4.6'/%3E%3Cpath%20d='M12%2012.1v8.4'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M20.4%208.4v7.2a1.8%201.8%200%200%201-.92%201.57l-6.6%203.7a1.8%201.8%200%200%201-1.76%200l-6.6-3.7A1.8%201.8%200%200%201%203.6%2015.6V8.4a1.8%201.8%200%200%201%20.92-1.57l6.6-3.7a1.8%201.8%200%200%201%201.76%200l6.6%203.7A1.8%201.8%200%200%201%2020.4%208.4Z'/%3E%3Cpath%20d='m3.85%207.5%208.15%204.6%208.15-4.6'/%3E%3Cpath%20d='M12%2012.1v8.4'/%3E%3C/svg%3E");
+}
+
+/* Udalosti */
+#nav-udalosti::before,
+#card-udalosti::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Crect%20x='3.2'%20y='5'%20width='17.6'%20height='15.8'%20rx='2'/%3E%3Cpath%20d='M3.2%209.6h17.6'/%3E%3Cpath%20d='M8.2%203.2v3.6'/%3E%3Cpath%20d='M15.8%203.2v3.6'/%3E%3Cpath%20d='M7.4%2013.4h2.2'/%3E%3Cpath%20d='M12.9%2013.4h2.2'/%3E%3Cpath%20d='M7.4%2017h2.2'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Crect%20x='3.2'%20y='5'%20width='17.6'%20height='15.8'%20rx='2'/%3E%3Cpath%20d='M3.2%209.6h17.6'/%3E%3Cpath%20d='M8.2%203.2v3.6'/%3E%3Cpath%20d='M15.8%203.2v3.6'/%3E%3Cpath%20d='M7.4%2013.4h2.2'/%3E%3Cpath%20d='M12.9%2013.4h2.2'/%3E%3Cpath%20d='M7.4%2017h2.2'/%3E%3C/svg%3E");
+}
+
+/* Kategórie */
+#nav-kategorie::before,
+#card-kategorie::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M11.8%203.6H4.6a1.4%201.4%200%200%200-1.4%201.4v7.2l8%208a1.4%201.4%200%200%200%202%200l5.2-5.2a1.4%201.4%200%200%200%200-2Z'/%3E%3Ccircle%20cx='7.4'%20cy='7.8'%20r='1.1'/%3E%3Cpath%20d='M15%203.6h4a1.4%201.4%200%200%201%201.4%201.4v4'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M11.8%203.6H4.6a1.4%201.4%200%200%200-1.4%201.4v7.2l8%208a1.4%201.4%200%200%200%202%200l5.2-5.2a1.4%201.4%200%200%200%200-2Z'/%3E%3Ccircle%20cx='7.4'%20cy='7.8'%20r='1.1'/%3E%3Cpath%20d='M15%203.6h4a1.4%201.4%200%200%201%201.4%201.4v4'/%3E%3C/svg%3E");
+}
+
+/* Fotografie */
+#nav-media::before,
+#card-media::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Crect%20x='3'%20y='4.8'%20width='18'%20height='14.4'%20rx='2'/%3E%3Ccircle%20cx='8.4'%20cy='9.6'%20r='1.5'/%3E%3Cpath%20d='m3.4%2017.2%204.8-4.8%203.6%203.6%203.2-3.2%205.6%205.6'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Crect%20x='3'%20y='4.8'%20width='18'%20height='14.4'%20rx='2'/%3E%3Ccircle%20cx='8.4'%20cy='9.6'%20r='1.5'/%3E%3Cpath%20d='m3.4%2017.2%204.8-4.8%203.6%203.6%203.2-3.2%205.6%205.6'/%3E%3C/svg%3E");
+}
+
+/* Súbory */
+#nav-subory::before,
+#card-subory::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M20.2%2011.6%2012.3%2019.5a5%205%200%200%201-7.1-7.1l8.5-8.5a3.3%203.3%200%200%201%204.7%204.7l-8.4%208.4a1.7%201.7%200%200%201-2.4-2.4l7.8-7.8'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M20.2%2011.6%2012.3%2019.5a5%205%200%200%201-7.1-7.1l8.5-8.5a3.3%203.3%200%200%201%204.7%204.7l-8.4%208.4a1.7%201.7%200%200%201-2.4-2.4l7.8-7.8'/%3E%3C/svg%3E");
+}
+
+/* Menu */
+#nav-navigacia::before,
+#card-navigacia::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Ccircle%20cx='4.8'%20cy='6.5'%20r='1.1'/%3E%3Ccircle%20cx='4.8'%20cy='12'%20r='1.1'/%3E%3Ccircle%20cx='4.8'%20cy='17.5'%20r='1.1'/%3E%3Cpath%20d='M9%206.5h11'/%3E%3Cpath%20d='M9%2012h11'/%3E%3Cpath%20d='M9%2017.5h11'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Ccircle%20cx='4.8'%20cy='6.5'%20r='1.1'/%3E%3Ccircle%20cx='4.8'%20cy='12'%20r='1.1'/%3E%3Ccircle%20cx='4.8'%20cy='17.5'%20r='1.1'/%3E%3Cpath%20d='M9%206.5h11'/%3E%3Cpath%20d='M9%2012h11'/%3E%3Cpath%20d='M9%2017.5h11'/%3E%3C/svg%3E");
+}
+
+/* Nastavenia webu */
+#nav-nastavenia-webu::before,
+#card-nastavenia-webu::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M4%207.2h9.6'/%3E%3Cpath%20d='M17.6%207.2H20'/%3E%3Cpath%20d='M4%2012h2.4'/%3E%3Cpath%20d='M10.4%2012H20'/%3E%3Cpath%20d='M4%2016.8h6.4'/%3E%3Cpath%20d='M14.4%2016.8H20'/%3E%3Ccircle%20cx='15.6'%20cy='7.2'%20r='2'/%3E%3Ccircle%20cx='8.4'%20cy='12'%20r='2'/%3E%3Ccircle%20cx='12.4'%20cy='16.8'%20r='2'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M4%207.2h9.6'/%3E%3Cpath%20d='M17.6%207.2H20'/%3E%3Cpath%20d='M4%2012h2.4'/%3E%3Cpath%20d='M10.4%2012H20'/%3E%3Cpath%20d='M4%2016.8h6.4'/%3E%3Cpath%20d='M14.4%2016.8H20'/%3E%3Ccircle%20cx='15.6'%20cy='7.2'%20r='2'/%3E%3Ccircle%20cx='8.4'%20cy='12'%20r='2'/%3E%3Ccircle%20cx='12.4'%20cy='16.8'%20r='2'/%3E%3C/svg%3E");
+}
+
+/* Presmerovania */
+#nav-presmerovania::before,
+#card-presmerovania::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M4%2017.2h8.8a4.4%204.4%200%200%200%204.4-4.4V7.2'/%3E%3Cpath%20d='m13.6%2010.8%203.6-3.6%203.6%203.6'/%3E%3Cpath%20d='m7.6%2013.6-3.6%203.6%203.6%203.6'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M4%2017.2h8.8a4.4%204.4%200%200%200%204.4-4.4V7.2'/%3E%3Cpath%20d='m13.6%2010.8%203.6-3.6%203.6%203.6'/%3E%3Cpath%20d='m7.6%2013.6-3.6%203.6%203.6%203.6'/%3E%3C/svg%3E");
+}
+
+/* Formuláre */
+#nav-formulare::before,
+#card-formulare::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M8.4%204.4H6a2%202%200%200%200-2%202v13.2a2%202%200%200%200%202%202h12a2%202%200%200%200%202-2V6.4a2%202%200%200%200-2-2h-2.4'/%3E%3Crect%20x='8.4'%20y='2.4'%20width='7.2'%20height='4'%20rx='1.2'/%3E%3Cpath%20d='m8.6%2013.8%202.5%202.5%204.4-4.4'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M8.4%204.4H6a2%202%200%200%200-2%202v13.2a2%202%200%200%200%202%202h12a2%202%200%200%200%202-2V6.4a2%202%200%200%200-2-2h-2.4'/%3E%3Crect%20x='8.4'%20y='2.4'%20width='7.2'%20height='4'%20rx='1.2'/%3E%3Cpath%20d='m8.6%2013.8%202.5%202.5%204.4-4.4'/%3E%3C/svg%3E");
+}
+
+/* Odpovede */
+#nav-odpovede::before,
+#card-odpovede::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M3.2%2013.4h4.4l1.4%202.6h6l1.4-2.6h4.4'/%3E%3Cpath%20d='M5.4%205.4h13.2l2.2%208v4.2a2%202%200%200%201-2%202H5.2a2%202%200%200%201-2-2v-4.2Z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M3.2%2013.4h4.4l1.4%202.6h6l1.4-2.6h4.4'/%3E%3Cpath%20d='M5.4%205.4h13.2l2.2%208v4.2a2%202%200%200%201-2%202H5.2a2%202%200%200%201-2-2v-4.2Z'/%3E%3C/svg%3E");
+}
+
+/* Záznam činnosti */
+#nav-zaznamy::before,
+#card-zaznamy::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M3.4%2012a8.6%208.6%200%201%200%202.6-6.1'/%3E%3Cpath%20d='M3.4%204.6v4.4h4.4'/%3E%3Cpath%20d='M12%207.8V12l3%201.8'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M3.4%2012a8.6%208.6%200%201%200%202.6-6.1'/%3E%3Cpath%20d='M3.4%204.6v4.4h4.4'/%3E%3Cpath%20d='M12%207.8V12l3%201.8'/%3E%3C/svg%3E");
+}
+
+/* Projekty */
+#nav-projekty::before,
+#card-projekty::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Crect%20x='3.2'%20y='3.2'%20width='7.4'%20height='7.4'%20rx='1.4'/%3E%3Crect%20x='13.4'%20y='3.2'%20width='7.4'%20height='7.4'%20rx='1.4'/%3E%3Crect%20x='3.2'%20y='13.4'%20width='7.4'%20height='7.4'%20rx='1.4'/%3E%3Crect%20x='13.4'%20y='13.4'%20width='7.4'%20height='7.4'%20rx='1.4'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Crect%20x='3.2'%20y='3.2'%20width='7.4'%20height='7.4'%20rx='1.4'/%3E%3Crect%20x='13.4'%20y='3.2'%20width='7.4'%20height='7.4'%20rx='1.4'/%3E%3Crect%20x='3.2'%20y='13.4'%20width='7.4'%20height='7.4'%20rx='1.4'/%3E%3Crect%20x='13.4'%20y='13.4'%20width='7.4'%20height='7.4'%20rx='1.4'/%3E%3C/svg%3E");
+}
+
+/* Používatelia */
+#nav-users::before,
+#card-users::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Ccircle%20cx='12'%20cy='8.2'%20r='3.6'/%3E%3Cpath%20d='M4.8%2020.4a7.2%207.2%200%200%201%2014.4%200'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Ccircle%20cx='12'%20cy='8.2'%20r='3.6'/%3E%3Cpath%20d='M4.8%2020.4a7.2%207.2%200%200%201%2014.4%200'/%3E%3C/svg%3E");
+}
+
+/* API kľúče */
+#nav-api-klienti::before,
+#card-api-klienti::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Ccircle%20cx='7.6'%20cy='16.4'%20r='3.4'/%3E%3Cpath%20d='m10%2014%208.2-8.2'/%3E%3Cpath%20d='m15.6%208.4%202.2%202.2'/%3E%3Cpath%20d='m18%206%202.2%202.2'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='1.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Ccircle%20cx='7.6'%20cy='16.4'%20r='3.4'/%3E%3Cpath%20d='m10%2014%208.2-8.2'/%3E%3Cpath%20d='m15.6%208.4%202.2%202.2'/%3E%3Cpath%20d='m18%206%202.2%202.2'/%3E%3C/svg%3E");
+}

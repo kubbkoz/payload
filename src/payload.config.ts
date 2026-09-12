@@ -74,8 +74,8 @@ export default buildConfig({
       },
     },
     meta: {
-      titleSuffix: " · ZJAV_",
-      description: "Obsahový hub ZJAV_ — jedna administrácia pre všetky napojené weby.",
+      titleSuffix: " · ZJAV CMS",
+      description: "ZJAV CMS — Content Hub. Jedna administrácia pre všetky napojené weby.",
       icons: [{ rel: "icon", type: "image/svg+xml", url: "/zjav-ikona.svg" }],
     },
   },
